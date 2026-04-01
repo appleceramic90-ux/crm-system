@@ -1,29 +1,34 @@
-{
-  "$schema": "https://render.com/schema.json",
-  "services": [
-    {
-      "type": "web",
-      "name": "crm-backend",
-      "runtime": "node",
-      "repo": "https://github.com/wharton-building/crm-system",
-      "branch": "main",
-      "buildCommand": "cd backend && pnpm install && pnpm prisma:generate && pnpm build",
-      "startCommand": "cd backend && node dist/index.js",
-      "envVars": [
-        { "key": "NODE_ENV", "value": "production" },
-        { "key": "PORT", "value": "3000" },
-        { "key": "API_PREFIX", "value": "/api" },
-        { "key": "JWT_SECRET", "generateValue": true },
-        { "key": "CORS_ORIGIN", "value": "*" },
-        { "key": "DATABASE_URL", "fromDatabase": { "name": "crm-db", "property": "connectionString" } }
-      ]
-    }
-  ],
-  "databases": [
-    {
-      "name": "crm-db",
-      "databaseName": "crm",
-      "user": "crm_user"
-    }
-  ]
-}
+services:
+  # PostgreSQL 数据库
+  - type: pserv
+    name: crm-db
+    plan: starter
+    env: postgresql
+    repo: https://github.com/appleceramic90-ux/crm-system
+    branch: main
+
+  # 后端 API 服务
+  - type: web
+    name: crm-backend
+    plan: starter
+    env: node
+    repo: https://github.com/appleceramic90-ux/crm-system
+    branch: main
+    rootDir: backend
+    buildCommand: pnpm install && pnpm prisma:generate && pnpm build
+    startCommand: node dist/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: API_PREFIX
+        value: /api
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: crm-db
+          property: connectionString

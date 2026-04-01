@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express'
-import { PrismaClient, CustomerSource, CustomerStatus } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { validate } from '../middleware/validation'

@@ -1,12 +1,12 @@
 // Prisma Schema for Customer Management System
-// PostgreSQL database with TypeScript ORM
+// SQLite database for free deployment
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -34,7 +34,7 @@ model Customer {
   phone     String?
   source    CustomerSource @default(website)
   status    CustomerStatus @default(prospect)
-  notes     String?    @db.Text
+  notes     String?
   userId    String
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime   @default(now())
@@ -48,17 +48,17 @@ model Customer {
 
 // 客户来源枚举
 enum CustomerSource {
-  website    // 官网
-  phone      // 电话
-  referral   // 转介绍
-  exhibition // 展会
-  other      // 其他
+  website
+  phone
+  referral
+  exhibition
+  other
 }
 
 // 客户状态枚举
 enum CustomerStatus {
-  prospect   // 潜在客户
-  interested // 意向客户
-  deal       // 成交客户
-  lost       // 流失客户
+  prospect
+  interested
+  deal
+  lost
 }
