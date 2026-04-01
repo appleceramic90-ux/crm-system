@@ -1,0 +1,64 @@
+// Prisma Schema for Customer Management System
+// PostgreSQL database with TypeScript ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  customers Customer[]
+}
+
+// 客户模型
+model Customer {
+  id        String      @id @default(uuid())
+  name      String
+  company   String?
+  position  String?
+  email     String?
+  phone     String?
+  source    CustomerSource @default(website)
+  status    CustomerStatus @default(prospect)
+  notes     String?    @db.Text
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+}
+
+// 客户来源枚举
+enum CustomerSource {
+  website    // 官网
+  phone      // 电话
+  referral   // 转介绍
+  exhibition // 展会
+  other      // 其他
+}
+
+// 客户状态枚举
+enum CustomerStatus {
+  prospect   // 潜在客户
+  interested // 意向客户
+  deal       // 成交客户
+  lost       // 流失客户
+}

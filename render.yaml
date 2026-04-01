@@ -1,0 +1,29 @@
+{
+  "$schema": "https://render.com/schema.json",
+  "services": [
+    {
+      "type": "web",
+      "name": "crm-backend",
+      "runtime": "node",
+      "repo": "https://github.com/wharton-building/crm-system",
+      "branch": "main",
+      "buildCommand": "cd backend && pnpm install && pnpm prisma:generate && pnpm build",
+      "startCommand": "cd backend && node dist/index.js",
+      "envVars": [
+        { "key": "NODE_ENV", "value": "production" },
+        { "key": "PORT", "value": "3000" },
+        { "key": "API_PREFIX", "value": "/api" },
+        { "key": "JWT_SECRET", "generateValue": true },
+        { "key": "CORS_ORIGIN", "value": "*" },
+        { "key": "DATABASE_URL", "fromDatabase": { "name": "crm-db", "property": "connectionString" } }
+      ]
+    }
+  ],
+  "databases": [
+    {
+      "name": "crm-db",
+      "databaseName": "crm",
+      "user": "crm_user"
+    }
+  ]
+}

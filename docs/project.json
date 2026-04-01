@@ -1,0 +1,8 @@
+{
+  "project_type": "web",
+  "sub_project_type": "",
+  "name": "客户管理系统",
+  "app_slug": "crm-system",
+  "version_description": "开发完成，参考小满OKKi蓝色科技风格，包含登录、数据看板、客户管理功能",
+  "preview_type": "pc"
+}
